@@ -70,6 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentTab === 'spells') compendiumDesc.innerText = 'Consulte as magias arcanas e divinas.';
             else if (currentTab === 'monsters') compendiumDesc.innerText = 'Pesquise por criaturas e feras.';
             else if (currentTab === 'classes') compendiumDesc.innerText = 'Descubra os caminhos dos heróis.';
+            else if (currentTab === 'races') compendiumDesc.innerText = 'Conheça os povos que habitam este mundo.';
+            else if (currentTab === 'magic-items') compendiumDesc.innerText = 'Encontre artefatos e relíquias de poder.';
 
             // Fetch new datalist
             fetchTabList(currentTab);
@@ -134,6 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentTab === 'spells') displaySpell(data);
             else if (currentTab === 'monsters') displayMonster(data);
             else if (currentTab === 'classes') displayClass(data);
+            else if (currentTab === 'races') displayRace(data);
+            else if (currentTab === 'magic-items') displayMagicItem(data);
             
         } catch (error) {
             showResultError(`Não encontramos "${apiInput.value}" nos registros. Verifique a ortografia.`);
@@ -203,6 +207,39 @@ document.addEventListener('DOMContentLoaded', () => {
             <hr style="border: 0; border-top: 1px solid var(--primary-color); margin: 20px 0;">
             <div class="description">${customDesc}</div>
             <p style="margin-top:20px; font-size: 0.9em; opacity: 0.8">Para ver a progressão completa de níveis, equipamentos e subclasses, visite os registros completos do jogador.</p>
+        `;
+    }
+
+    function displayRace(race) {
+        const abilityBonuses = race.ability_bonuses ? race.ability_bonuses.map(ab => `+${ab.bonus} ${ab.ability_score.name}`).join(', ') : 'Nenhum';
+        const languages = race.languages ? race.languages.map(l => l.name).join(', ') : 'Nenhum';
+        const traits = race.traits && race.traits.length > 0 ? race.traits.map(t => t.name).join(', ') : 'Nenhum';
+        
+        resultContainer.innerHTML = `
+            <h3>${race.name}</h3>
+            <p><strong>Deslocamento (Speed):</strong> ${race.speed} ft.</p>
+            <p><strong>Bônus de Atributos:</strong> ${abilityBonuses}</p>
+            <p><strong>Tamanho:</strong> ${race.size} - ${race.size_description}</p>
+            <p><strong>Tendência (Alignment):</strong> ${race.alignment}</p>
+            <hr style="border: 0; border-top: 1px solid var(--primary-color); margin: 20px 0;">
+            <p><strong>Idade:</strong> ${race.age}</p>
+            <p><strong>Idiomas:</strong> ${languages}</p>
+            <p><strong>Traços Raciais:</strong> ${traits}</p>
+        `;
+    }
+
+    function displayMagicItem(item) {
+        const rarity = item.rarity ? item.rarity.name : 'Desconhecida';
+        const description = item.desc ? item.desc.map(d => `<p>${d}</p>`).join('') : '<p>Sem descrição disponível.</p>';
+        const attunement = (item.requires_attunement === "requires attunement" || item.requires_attunement === true) ? 'Sim' : 'Não';
+        
+        resultContainer.innerHTML = `
+            <h3>${item.name}</h3>
+            <p><strong>Categoria:</strong> ${item.equipment_category ? item.equipment_category.name : 'Item Mágico'}</p>
+            <p><strong>Raridade:</strong> ${rarity}</p>
+            <p><strong>Requer Sintonia (Attunement):</strong> ${attunement}</p>
+            <hr style="border: 0; border-top: 1px solid var(--primary-color); margin: 20px 0;">
+            <div class="description">${description}</div>
         `;
     }
 

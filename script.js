@@ -1,121 +1,209 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. Smooth Scrolling and CTA Button
-    const ctaBtn = document.getElementById('cta-btn');
-    ctaBtn.addEventListener('click', () => {
-        const compendiumSection = document.getElementById('compendium');
-        compendiumSection.scrollIntoView({ behavior: 'smooth' });
+    // --- 1. THEME TOGGLE & LOCAL STORAGE ---
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Check saved theme
+    if (localStorage.getItem('theme') === 'light') {
+        body.classList.add('light-mode');
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+        body.classList.toggle('light-mode');
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('theme', 'light');
+        } else {
+            localStorage.setItem('theme', 'dark');
+        }
     });
 
-    // Handle all nav links for smooth scrolling
+    // --- 2. HERO GREETING (LOCAL STORAGE) ---
+    const savedHeroName = localStorage.getItem('heroName');
+    const heroTitle = document.getElementById('hero-title');
+    if (savedHeroName) {
+        heroTitle.innerText = `Bem vindo de volta à guilda, ${savedHeroName}!`;
+    }
+
+    // --- 3. SMOOTH SCROLLING ---
+    const ctaBtn = document.getElementById('cta-btn');
+    ctaBtn.addEventListener('click', () => {
+        document.getElementById('compendium').scrollIntoView({ behavior: 'smooth' });
+    });
+
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth'
-                });
+                target.scrollIntoView({ behavior: 'smooth' });
             }
         });
     });
 
-    // 2. API Consumption (D&D 5e API)
-    const searchBtn = document.getElementById('search-btn');
-    const spellInput = document.getElementById('spell-input');
-    const resultContainer = document.getElementById('result-container');
+    // --- 4. TABS & DATALIST AUTOCOMPLETE ---
+    let currentTab = 'spells';
+    let currentListData = []; // Store the API list for the current tab
 
-    searchBtn.addEventListener('click', searchSpell);
-    spellInput.addEventListener('keypress', (e) => {
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const apiInput = document.getElementById('api-input');
+    const datalist = document.getElementById('api-suggestions');
+    const resultContainer = document.getElementById('result-container');
+    const compendiumDesc = document.getElementById('compendium-desc');
+    const searchBtn = document.getElementById('search-btn');
+
+    // Initial load for spells
+    fetchTabList('spells');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // UI Update
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // State Update
+            currentTab = btn.getAttribute('data-tab');
+            apiInput.value = '';
+            resultContainer.classList.add('hidden');
+            
+            // Description Update
+            if (currentTab === 'spells') compendiumDesc.innerText = 'Consulte as magias arcanas e divinas.';
+            else if (currentTab === 'monsters') compendiumDesc.innerText = 'Pesquise por criaturas e feras.';
+            else if (currentTab === 'classes') compendiumDesc.innerText = 'Descubra os caminhos dos heróis.';
+
+            // Fetch new datalist
+            fetchTabList(currentTab);
+        });
+    });
+
+    async function fetchTabList(endpoint) {
+        apiInput.placeholder = 'Carregando arquivos da biblioteca...';
+        apiInput.disabled = true;
+        try {
+            const res = await fetch(`https://www.dnd5eapi.co/api/${endpoint}`);
+            const data = await res.json();
+            currentListData = data.results;
+            
+            // Populate datalist
+            datalist.innerHTML = '';
+            currentListData.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.name;
+                datalist.appendChild(option);
+            });
+
+            apiInput.placeholder = 'Digite o nome (em inglês)...';
+            apiInput.disabled = false;
+        } catch (error) {
+            apiInput.placeholder = 'Erro ao carregar dados.';
+        }
+    }
+
+    // --- 5. SEARCH & DYNAMIC RENDERING ---
+    searchBtn.addEventListener('click', executeSearch);
+    apiInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            searchSpell();
+            executeSearch();
         }
     });
 
-    async function searchSpell() {
-        const query = spellInput.value.trim().toLowerCase().replace(/\s+/g, '-');
+    async function executeSearch() {
+        const queryName = apiInput.value.trim().toLowerCase();
+        if (!queryName) return;
+
+        // Find the index in our current list
+        const match = currentListData.find(item => item.name.toLowerCase() === queryName);
         
-        if (!query) {
-            showResultError('Por favor, digite o nome de uma magia. Ex: fireball');
-            return;
+        let queryIndex = '';
+        if (match) {
+            queryIndex = match.index;
+        } else {
+            // Fallback string replacement if they bypass autocomplete
+            queryIndex = queryName.replace(/\s+/g, '-');
         }
 
-        // Loading state
         resultContainer.innerHTML = '<p>Consultando os pergaminhos antigos...</p>';
         resultContainer.classList.remove('hidden');
 
         try {
-            // API Call
-            const response = await fetch(`https://www.dnd5eapi.co/api/spells/${query}`);
+            const response = await fetch(`https://www.dnd5eapi.co/api/${currentTab}/${queryIndex}`);
+            if (!response.ok) throw new Error('Registro não encontrado.');
             
-            if (!response.ok) {
-                throw new Error('Magia não encontrada nos registros.');
-            }
-
             const data = await response.json();
-            displaySpellData(data);
+            
+            if (currentTab === 'spells') displaySpell(data);
+            else if (currentTab === 'monsters') displayMonster(data);
+            else if (currentTab === 'classes') displayClass(data);
             
         } catch (error) {
-            showResultError('Magia não encontrada. Verifique se o nome está correto (em inglês). Ex: cure-wounds, magic-missile');
+            showResultError(`Não encontramos "${apiInput.value}" nos registros. Verifique a ortografia.`);
         }
     }
 
-    function displaySpellData(spell) {
-        // Formating data
+    function displaySpell(spell) {
         const level = spell.level === 0 ? 'Truque (Cantrip)' : `Nível ${spell.level}`;
         const components = spell.components.join(', ');
-        const classes = spell.classes.map(c => c.name).join(', ');
+        const desc = spell.desc.map(d => `<p>${d}</p>`).join('');
         
-        // Convert markdown-like descriptions to HTML paragraphs
-        const description = spell.desc.map(d => `<p>${d}</p>`).join('');
-        
-        const higherLevel = spell.higher_level ? 
-            `<p><strong>Em Níveis Superiores:</strong> ${spell.higher_level.join(' ')}</p>` : '';
-
-        const html = `
+        resultContainer.innerHTML = `
             <h3>${spell.name}</h3>
             <p><strong>Nível e Escola:</strong> ${level} - ${spell.school.name}</p>
             <p><strong>Tempo de Conjuração:</strong> ${spell.casting_time}</p>
             <p><strong>Alcance:</strong> ${spell.range}</p>
-            <p><strong>Componentes:</strong> ${components} ${spell.material ? `(${spell.material})` : ''}</p>
-            <p><strong>Duração:</strong> ${spell.duration} ${spell.concentration ? '(Concentração)' : ''}</p>
-            <p><strong>Classes:</strong> ${classes}</p>
+            <p><strong>Componentes:</strong> ${components}</p>
+            <p><strong>Duração:</strong> ${spell.duration}</p>
             <hr style="border: 0; border-top: 1px solid var(--primary-color); margin: 20px 0;">
-            <div class="spell-description">
-                ${description}
-                ${higherLevel}
-            </div>
+            <div class="description">${desc}</div>
         `;
+    }
 
-        resultContainer.innerHTML = html;
+    function displayMonster(monster) {
+        const imgHtml = monster.image ? `<img src="https://www.dnd5eapi.co${monster.image}" alt="${monster.name}" class="monster-image">` : '';
+        const ac = monster.armor_class.length > 0 ? monster.armor_class[0].value : 'N/A';
+        
+        resultContainer.innerHTML = `
+            <h3>${monster.name}</h3>
+            ${imgHtml}
+            <p><strong>Tipo:</strong> ${monster.size} ${monster.type}, ${monster.alignment}</p>
+            <p><strong>Classe de Armadura (AC):</strong> ${ac}</p>
+            <p><strong>Pontos de Vida (HP):</strong> ${monster.hit_points}</p>
+            <p><strong>Desafio (CR):</strong> ${monster.challenge_rating}</p>
+            <hr style="border: 0; border-top: 1px solid var(--primary-color); margin: 20px 0;">
+            <p><strong>For:</strong> ${monster.strength} | <strong>Des:</strong> ${monster.dexterity} | <strong>Con:</strong> ${monster.constitution} | <strong>Int:</strong> ${monster.intelligence} | <strong>Sab:</strong> ${monster.wisdom} | <strong>Car:</strong> ${monster.charisma}</p>
+        `;
+    }
+
+    function displayClass(cls) {
+        const proficiencies = cls.proficiencies.map(p => p.name).join(', ');
+        
+        resultContainer.innerHTML = `
+            <h3>${cls.name}</h3>
+            <p><strong>Dado de Vida (Hit Die):</strong> d${cls.hit_die}</p>
+            <p><strong>Proficiências Iniciais:</strong> ${proficiencies}</p>
+            <hr style="border: 0; border-top: 1px solid var(--primary-color); margin: 20px 0;">
+            <p>Para ver a progressão completa de níveis, equipamentos e subclasses, visite os registros completos do jogador.</p>
+        `;
     }
 
     function showResultError(message) {
-        resultContainer.innerHTML = `<p style="color: #ff6b6b;"><strong>Erro:</strong> ${message}</p>`;
+        resultContainer.innerHTML = `<p style="color: #ff6b6b;"><strong>Atenção:</strong> ${message}</p>`;
     }
 
-    // 3. Contact Form Submission
+    // --- 6. CONTACT FORM & LOCAL STORAGE ---
     const guildForm = document.getElementById('guild-form');
     const formSuccess = document.getElementById('form-success');
+    const nameInput = document.getElementById('name');
 
     guildForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Prevent page reload
+        e.preventDefault();
         
-        // In a real app, you would send the data to a server here.
-        // For this task, we just show the success message.
+        // Save Name to Local Storage
+        const heroName = nameInput.value.trim();
+        if (heroName) {
+            localStorage.setItem('heroName', heroName);
+        }
         
-        guildForm.style.display = 'none'; // Hide form
-        formSuccess.classList.remove('hidden'); // Show success message
-        
-        // Optional: Reset form fields if they want to submit again later
-        guildForm.reset();
-        
-        // Optional: Re-show form after 5 seconds
-        /*
-        setTimeout(() => {
-            guildForm.style.display = 'block';
-            formSuccess.classList.add('hidden');
-        }, 5000);
-        */
+        guildForm.style.display = 'none';
+        formSuccess.classList.remove('hidden');
     });
 });

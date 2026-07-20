@@ -19,6 +19,7 @@
                     <li><a href="#hero">Início</a></li>
                     <li><a href="#compendium">O Compêndio</a></li>
                     <li><a href="#contact">Guilda</a></li>
+                    <li><button id="theme-toggle" class="theme-btn" title="Alternar Tema">🌓</button></li>
                 </ul>
             </nav>
         </div>
@@ -28,9 +29,9 @@
         <!-- Hero Section -->
         <section id="hero" class="hero">
             <div class="hero-content">
-                <h2>Sua jornada épica começa com o conhecimento.</h2>
-                <p>Explore magias e mistérios do universo de Dungeons & Dragons.</p>
-                <button id="cta-btn" class="btn-primary">Desvendar Magias</button>
+                <h2 id="hero-title">Sua jornada épica começa com o conhecimento.</h2>
+                <p>Explore magias, monstros e mistérios do universo de Dungeons & Dragons.</p>
+                <button id="cta-btn" class="btn-primary">Desvendar Segredos</button>
             </div>
             <div class="hero-overlay"></div>
         </section>
@@ -39,10 +40,17 @@
         <section id="compendium" class="compendium-section">
             <div class="container">
                 <h2>O Compêndio do Aventureiro</h2>
-                <p>Consulte as magias arcanas e divinas. (Ex: "Fireball", "Acid Arrow")</p>
+                <p id="compendium-desc">Consulte os registros milenares.</p>
                 
+                <div class="tabs-container">
+                    <button class="tab-btn active" data-tab="spells">Magias</button>
+                    <button class="tab-btn" data-tab="monsters">Monstros</button>
+                    <button class="tab-btn" data-tab="classes">Classes</button>
+                </div>
+
                 <div class="search-container">
-                    <input type="text" id="spell-input" placeholder="Digite o nome da magia em inglês..." autocomplete="off">
+                    <input type="text" id="api-input" list="api-suggestions" placeholder="Digite o nome (em inglês)..." autocomplete="off">
+                    <datalist id="api-suggestions"></datalist>
                     <button id="search-btn" class="btn-secondary">Buscar</button>
                 </div>
 

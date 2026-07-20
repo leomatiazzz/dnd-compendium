@@ -127,9 +127,23 @@ body.light-mode .nav-links a:hover {
     font-size: 1.2rem;
     cursor: pointer;
     transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
 }
 .theme-btn:hover {
     transform: scale(1.1);
+}
+.torch-icon {
+    height: 28px;
+    width: auto;
+    filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.8));
+    transition: filter 0.3s ease;
+}
+.theme-btn:hover .torch-icon {
+    filter: drop-shadow(0 0 12px rgba(212, 175, 55, 1));
+}
+body.light-mode .torch-icon {
+    filter: drop-shadow(0 0 5px rgba(139, 0, 0, 0.8));
 }
 
 /* Buttons */

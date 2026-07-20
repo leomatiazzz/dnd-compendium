@@ -147,30 +147,33 @@ document.addEventListener('DOMContentLoaded', () => {
     function displaySpell(spell) {
         const level = spell.level === 0 ? 'Truque (Cantrip)' : `Nível ${spell.level}`;
         const components = spell.components.join(', ');
-        const desc = spell.desc.map(d => `<p>${d}</p>`).join('');
+        const description = spell.desc.map(d => `<p>${d}</p>`).join('');
         
         resultContainer.innerHTML = `
             <h3>${spell.name}</h3>
             <p><strong>Nível e Escola:</strong> ${level} - ${spell.school.name}</p>
             <p><strong>Tempo de Conjuração:</strong> ${spell.casting_time}</p>
-            <p><strong>Alcance:</strong> ${spell.range}</p>
-            <p><strong>Componentes:</strong> ${components}</p>
-            <p><strong>Duração:</strong> ${spell.duration}</p>
-            <hr style="border: 0; border-top: 1px solid var(--primary-color); margin: 20px 0;">
-            <div class="description">${desc}</div>
+            <strong>Alcance:</strong> ${spell.range} <br>
+            <strong>Componentes:</strong> ${spell.components.join(', ')} <br>
+            <strong>Duração:</strong> ${spell.duration} <br>
+        </p>
+        <hr style="border: 0; border-top: 1px solid var(--primary-color); margin: 20px 0;">
+        <div class="description">${description}</div>
         `;
     }
 
     function displayMonster(monster) {
-        const imgHtml = monster.image ? `<img src="https://www.dnd5eapi.co${monster.image}" alt="${monster.name}" class="monster-image">` : '';
-        const ac = monster.armor_class.length > 0 ? monster.armor_class[0].value : 'N/A';
+        const imgHtml = monster.image ? `<img src="https://www.dnd5eapi.co${monster.image}" alt="${monster.name}" class="card-image">` : '';
+        const armorClass = monster.armor_class[0].value;
+        const speed = Object.entries(monster.speed).map(([k, v]) => `${k}: ${v}`).join(', ');
         
         resultContainer.innerHTML = `
             <h3>${monster.name}</h3>
             ${imgHtml}
             <p><strong>Tipo:</strong> ${monster.size} ${monster.type}, ${monster.alignment}</p>
-            <p><strong>Classe de Armadura (AC):</strong> ${ac}</p>
+            <p><strong>Classe de Armadura (AC):</strong> ${armorClass}</p>
             <p><strong>Pontos de Vida (HP):</strong> ${monster.hit_points}</p>
+            <p><strong>Deslocamento:</strong> ${speed}</p>
             <p><strong>Desafio (CR):</strong> ${monster.challenge_rating}</p>
             <hr style="border: 0; border-top: 1px solid var(--primary-color); margin: 20px 0;">
             <p><strong>For:</strong> ${monster.strength} | <strong>Des:</strong> ${monster.dexterity} | <strong>Con:</strong> ${monster.constitution} | <strong>Int:</strong> ${monster.intelligence} | <strong>Sab:</strong> ${monster.wisdom} | <strong>Car:</strong> ${monster.charisma}</p>
@@ -194,10 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayClass(cls) {
         const proficiencies = cls.proficiencies.map(p => p.name).join(', ');
-        const customDesc = classDescriptions[cls.index] || '';
-        
-        // Classes have local images in assets/classes
-        const imgHtml = `<img src="assets/classes/${cls.index}.png" alt="${cls.name}" class="monster-image">`;
+        const customDesc = classDescriptions[cls.index] || "<p>Nenhuma descrição disponível para esta classe ainda.</p>";
+        const imgHtml = `<img src="assets/classes/${cls.index}.png" alt="${cls.name}" class="card-image" onerror="this.style.display='none'">`;
         
         resultContainer.innerHTML = `
             <h3>${cls.name}</h3>
@@ -215,8 +216,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const languages = race.languages ? race.languages.map(l => l.name).join(', ') : 'Nenhum';
         const traits = race.traits && race.traits.length > 0 ? race.traits.map(t => t.name).join(', ') : 'Nenhum';
         
+        const raceImages = {
+            'dwarf': 'anao-dwarf.webp',
+            'dragonborn': 'draconato-dragonborn.webp',
+            'elf': 'elfo-elf.jpg',
+            'gnome': 'gnomo.webp',
+            'half-orc': 'half-orc--meio-orc.jpg',
+            'halfling': 'halfling.png',
+            'human': 'humano.jpg',
+            'half-elf': 'meio-elfo--half-elf.webp',
+            'tiefling': 'tiefling.jpg'
+        };
+        const imgFile = raceImages[race.index];
+        const imgHtml = imgFile ? `<img src="assets/raças/${imgFile}" alt="${race.name}" class="card-image">` : '';
+
         resultContainer.innerHTML = `
             <h3>${race.name}</h3>
+            ${imgHtml}
             <p><strong>Deslocamento (Speed):</strong> ${race.speed} ft.</p>
             <p><strong>Bônus de Atributos:</strong> ${abilityBonuses}</p>
             <p><strong>Tamanho:</strong> ${race.size} - ${race.size_description}</p>

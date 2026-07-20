@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Compendium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">D&D <span>Compendium</span></h1>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#hero">Início</a></li>
+                    <li><a href="#compendium">O Compêndio</a></li>
+                    <li><a href="#contact">Guilda</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero">
+            <div class="hero-content">
+                <h2>Sua jornada épica começa com o conhecimento.</h2>
+                <p>Explore magias e mistérios do universo de Dungeons & Dragons.</p>
+                <button id="cta-btn" class="btn-primary">Desvendar Magias</button>
+            </div>
+            <div class="hero-overlay"></div>
+        </section>
+
+        <!-- API Integration Section -->
+        <section id="compendium" class="compendium-section">
+            <div class="container">
+                <h2>O Compêndio do Aventureiro</h2>
+                <p>Consulte as magias arcanas e divinas. (Ex: "Fireball", "Acid Arrow")</p>
+                
+                <div class="search-container">
+                    <input type="text" id="spell-input" placeholder="Digite o nome da magia em inglês..." autocomplete="off">
+                    <button id="search-btn" class="btn-secondary">Buscar</button>
+                </div>
+
+                <div id="result-container" class="result-container hidden">
+                    <!-- Results from API will be rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2>Junte-se à Guilda</h2>
+                <p>Tem dúvidas ou quer compartilhar suas histórias de campanha? Envie uma mensagem!</p>
+                
+                <form id="guild-form" class="guild-form">
+                    <div class="input-group">
+                        <label for="name">Nome do Personagem (ou o seu)</label>
+                        <input type="text" id="name" required placeholder="Ex: Gandalf">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="email">Correio Eletrônico</label>
+                        <input type="email" id="email" required placeholder="gandalf@valinor.com">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="message">Mensagem</label>
+                        <textarea id="message" rows="4" required placeholder="Escreva sua mensagem aqui..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Enviar por Corvo</button>
+                </form>
+
+                <div id="form-success" class="hidden success-message">
+                    <p>Sua mensagem foi enviada com sucesso! Os sábios da guilda responderão em breve.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 D&D Compendium. Desenvolvido para a atividade.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

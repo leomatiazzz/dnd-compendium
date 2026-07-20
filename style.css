@@ -379,6 +379,43 @@ body.light-mode .result-container h3 {
     background-color: var(--contact-bg);
     text-align: center;
     transition: background-color 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-section .contact-container {
+    position: relative;
+    z-index: 2;
+}
+
+.contact-decor {
+    position: absolute;
+    bottom: -5%;
+    width: 30%;
+    max-width: 450px;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 1;
+}
+
+.decor-villains {
+    left: -5%;
+}
+
+.decor-heroes {
+    right: -5%;
+}
+
+@media (max-width: 1024px) {
+    .contact-decor {
+        width: 25%;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-decor {
+        display: none;
+    }
 }
 
 .contact-section h2 {

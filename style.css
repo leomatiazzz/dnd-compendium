@@ -399,11 +399,11 @@ body.light-mode .result-container h3 {
 }
 
 .decor-villains {
-    left: -5%;
+    left: 0;
 }
 
 .decor-heroes {
-    right: -5%;
+    right: 0;
 }
 
 @media (max-width: 1024px) {

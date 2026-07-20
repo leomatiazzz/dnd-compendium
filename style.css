@@ -245,32 +245,27 @@ body.light-mode .btn-secondary:hover {
     z-index: 2;
 }
 
-.compendium-decor {
+.compendium-decor-center {
     position: absolute;
-    bottom: -10%;
-    width: 45%;
-    max-width: 550px;
-    opacity: 1;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 900px;
+    opacity: 0.15;
     z-index: 1;
     pointer-events: none;
 }
 
-.decor-left {
-    left: -10%;
-}
-
-.decor-right {
-    right: -10%;
-}
-
 @media (max-width: 1024px) {
-    .compendium-decor {
-        width: 35%;
+    .compendium-decor-center {
+        max-width: 700px;
+        opacity: 0.12;
     }
 }
 
 @media (max-width: 768px) {
-    .compendium-decor {
+    .compendium-decor-center {
         display: none;
     }
 }

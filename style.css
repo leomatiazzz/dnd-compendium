@@ -236,6 +236,49 @@ body.light-mode .btn-secondary:hover {
     text-align: center;
     min-height: 80vh;
     transition: background-color 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.compendium-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.compendium-decor {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30%;
+    max-width: 450px;
+    opacity: 0.15;
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+body.light-mode .compendium-decor {
+    opacity: 0.25;
+}
+
+.decor-left {
+    left: -5%;
+}
+
+.decor-right {
+    right: -5%;
+}
+
+@media (max-width: 1024px) {
+    .compendium-decor {
+        width: 25%;
+    }
+}
+
+@media (max-width: 768px) {
+    .compendium-decor {
+        display: none;
+    }
 }
 
 .compendium-section h2 {

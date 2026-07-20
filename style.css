@@ -79,9 +79,16 @@ body.light-mode .header {
 }
 
 .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 1.8rem;
     margin-bottom: 0;
     color: var(--secondary-color);
+}
+.logo-img {
+    height: 1.2em;
+    width: auto;
 }
 body.light-mode .logo {
     color: var(--text-color);

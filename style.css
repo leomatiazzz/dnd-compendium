@@ -247,21 +247,19 @@ body.light-mode .btn-secondary:hover {
 
 .compendium-decor-center {
     position: absolute;
-    bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 1600px;
-    max-width: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
     opacity: 0.15;
     z-index: 1;
     pointer-events: none;
 }
 
 @media (max-width: 1024px) {
-    .compendium-decor-center {
-        width: 1200px;
-        bottom: 50px;
-    }
+    /* Não precisamos de ajustes fixos com object-fit */
 }
 
 @media (max-width: 768px) {

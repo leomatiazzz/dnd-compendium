@@ -78,6 +78,37 @@
                         <label for="email">Correio Eletrônico</label>
                         <input type="email" id="email" required placeholder="gandalf@valinor.com">
                     </div>
+
+                    <div class="address-grid">
+                        <div class="input-group">
+                            <label for="cep">CEP</label>
+                            <input type="text" id="cep" required placeholder="Ex: 01001-000" maxlength="9">
+                        </div>
+                        <div class="input-group">
+                            <label for="logradouro">Logradouro</label>
+                            <input type="text" id="logradouro" required placeholder="Rua/Avenida" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="numero">Número</label>
+                            <input type="text" id="numero" required placeholder="Ex: 42">
+                        </div>
+                        <div class="input-group">
+                            <label for="complemento">Complemento</label>
+                            <input type="text" id="complemento" placeholder="Apto, Bloco...">
+                        </div>
+                        <div class="input-group">
+                            <label for="bairro">Bairro</label>
+                            <input type="text" id="bairro" required placeholder="Bairro" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="cidade">Cidade</label>
+                            <input type="text" id="cidade" required placeholder="Cidade" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="estado">Estado</label>
+                            <input type="text" id="estado" required placeholder="UF" readonly>
+                        </div>
+                    </div>
                     
                     <div class="input-group">
                         <label for="message">Mensagem</label>
@@ -88,7 +119,8 @@
                 </form>
 
                 <div id="form-success" class="hidden success-message">
-                    <p>Sua mensagem foi enviada com sucesso! Os sábios da guilda responderão em breve.</p>
+                    <p style="font-size: 1.2rem; margin-bottom: 15px; color: var(--primary-color);"><strong>⚔️ Sua jornada está prestes a começar!</strong></p>
+                    <p>Você está pronto para juntar-se à guilda e explorar as masmorras. Em breve enviaremos sua ficha de aventureiro para que você possa completar seu cadastro e iniciar sua jornada. Que os dados estejam sempre a seu favor!</p>
                 </div>
             </div>
         </section>

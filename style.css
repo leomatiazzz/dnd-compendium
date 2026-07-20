@@ -357,8 +357,21 @@ body.light-mode .result-container h3 {
 
 .guild-form {
     max-width: 600px;
-    margin: 40px auto 0;
+    margin: 0 auto;
     text-align: left;
+}
+
+.address-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+    .address-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .input-group {

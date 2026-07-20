@@ -263,10 +263,39 @@ document.addEventListener('DOMContentLoaded', () => {
         resultContainer.innerHTML = `<p style="color: #ff6b6b;"><strong>Atenção:</strong> ${message}</p>`;
     }
 
-    // --- 6. CONTACT FORM & LOCAL STORAGE ---
+    // --- 6. CONTACT FORM, LOCAL STORAGE & VIACEP ---
     const guildForm = document.getElementById('guild-form');
     const formSuccess = document.getElementById('form-success');
     const nameInput = document.getElementById('name');
+
+    // ViaCEP Integration
+    const cepInput = document.getElementById('cep');
+    const logradouroInput = document.getElementById('logradouro');
+    const bairroInput = document.getElementById('bairro');
+    const cidadeInput = document.getElementById('cidade');
+    const estadoInput = document.getElementById('estado');
+
+    if (cepInput) {
+        cepInput.addEventListener('blur', async (e) => {
+            let cep = e.target.value.replace(/\D/g, '');
+            if (cep.length === 8) {
+                try {
+                    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                    const data = await response.json();
+                    if (!data.erro) {
+                        logradouroInput.value = data.logradouro;
+                        bairroInput.value = data.bairro;
+                        cidadeInput.value = data.localidade;
+                        estadoInput.value = data.uf;
+                    } else {
+                        alert("CEP não encontrado nas terras conhecidas!");
+                    }
+                } catch (err) {
+                    console.error("Erro ao buscar CEP:", err);
+                }
+            }
+        });
+    }
 
     guildForm.addEventListener('submit', (e) => {
         e.preventDefault();

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Compendium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <h1 class="logo"><img src="assets/logo.png" alt="D&D Logo" class="logo-img"> <span>Compendium</span></h1>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html#hero">Início</a></li>
+                    <li><a href="index.html#compendium">O Compêndio</a></li>
+                    <li><a href="index.html#contact">Guilda</a></li>
+                    <li><a href="saiba-mais.html">Saiba Mais</a></li>
+                    <li><button id="theme-toggle" class="theme-btn" title="Alternar Tema"><img src="assets/torch.png" alt="Tocha" class="torch-icon"></button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Seção de herói -->
+        <section id="hero" class="hero">
+            <div class="hero-content">
+                <h2 id="hero-title">Sua jornada épica começa com o conhecimento.</h2>
+                <p>Explore magias, monstros e mistérios do universo de Dungeons & Dragons.</p>
+                <button id="cta-btn" class="btn-primary">Desvendar Segredos</button>
+            </div>
+            <div class="hero-overlay"></div>
+        </section>
+
+        <!-- Seção de integração de API -->
+        <section id="compendium" class="compendium-section relative-overflow">
+            <img src="assets/backgrounds/party.png" class="compendium-decor-center" alt="" aria-hidden="true">
+            
+            <div class="container content-z">
+                <h2>O Compêndio do Aventureiro</h2>
+                <p id="compendium-desc">Consulte os registros milenares.</p>
+                
+                <div class="tabs-container">
+                    <button class="tab-btn active" data-tab="spells">Magias</button>
+                    <button class="tab-btn" data-tab="monsters">Monstros</button>
+                    <button class="tab-btn" data-tab="classes">Classes</button>
+                    <button class="tab-btn" data-tab="races">Raças</button>
+                    <button class="tab-btn" data-tab="magic-items">Itens Mágicos</button>
+                </div>
+
+                <div class="search-container">
+                    <input type="text" id="api-input" list="api-suggestions" placeholder="Digite o nome (em inglês)..." autocomplete="off">
+                    <datalist id="api-suggestions"></datalist>
+                    <button id="search-btn" class="btn-secondary">Buscar</button>
+                </div>
+
+                <div id="result-container" class="result-container hidden">
+                    <!-- Resultados da API serão renderizados aqui -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção do formulário de contato -->
+        <section id="contact" class="contact-section">
+            <img src="assets/backgrounds/villains.png" class="contact-decor decor-villains" alt="" aria-hidden="true">
+            <img src="assets/backgrounds/heroes.png" class="contact-decor decor-heroes" alt="" aria-hidden="true">
+            
+            <div class="container contact-container">
+                <h2>Junte-se à Guilda</h2>
+                <p>Tem dúvidas ou quer compartilhar suas histórias de campanha? Envie uma mensagem!</p>
+                
+                <form id="guild-form" class="guild-form">
+                    <div class="input-group">
+                        <label for="name">Nome do Personagem (ou o seu)</label>
+                        <input type="text" id="name" required placeholder="Ex: Gandalf">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="email">Correio Eletrônico</label>
+                        <input type="email" id="email" required placeholder="gandalf@valinor.com">
+                    </div>
+
+                    <div class="address-grid">
+                        <div class="input-group">
+                            <label for="cep">CEP</label>
+                            <input type="text" id="cep" required placeholder="Ex: 01001-000" maxlength="9">
+                        </div>
+                        <div class="input-group">
+                            <label for="logradouro">Logradouro</label>
+                            <input type="text" id="logradouro" required placeholder="Rua/Avenida" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="numero">Número</label>
+                            <input type="text" id="numero" required placeholder="Ex: 42">
+                        </div>
+                        <div class="input-group">
+                            <label for="complemento">Complemento</label>
+                            <input type="text" id="complemento" placeholder="Apto, Bloco...">
+                        </div>
+                        <div class="input-group">
+                            <label for="bairro">Bairro</label>
+                            <input type="text" id="bairro" required placeholder="Bairro" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="cidade">Cidade</label>
+                            <input type="text" id="cidade" required placeholder="Cidade" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="estado">Estado</label>
+                            <input type="text" id="estado" required placeholder="UF" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="message">Mensagem</label>
+                        <textarea id="message" rows="4" required placeholder="Escreva sua mensagem aqui..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Enviar por Corvo</button>
+                </form>
+
+                <div id="form-success" class="hidden success-message">
+                    <p style="font-size: 1.2rem; margin-bottom: 15px; color: var(--primary-color);"><strong>⚔️ Sua jornada está prestes a começar!</strong></p>
+                    <p>Você está pronto para juntar-se à guilda e explorar as masmorras. Em breve enviaremos sua ficha de aventureiro para que você possa completar seu cadastro e iniciar sua jornada. Que os dados estejam sempre a seu favor!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 D&D Compendium. Que os dados rolem alto.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

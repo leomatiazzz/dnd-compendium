@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    if (!document.getElementById('hero-title')) return; // Para execução se não for a página principal
+
     // --- 2. HERO GREETING (LOCAL STORAGE) ---
     const savedHeroName = localStorage.getItem('heroName');
     const heroTitle = document.getElementById('hero-title');

@@ -1,5 +1,5 @@
 :root {
-    /* Dark Theme (Default) */
+    /* Tema Escuro (Padrão) */
     --primary-color: #8B0000; /* Dark Red */
     --primary-hover: #A52A2A; /* Lighter Red */
     --secondary-color: #D4AF37; /* Gold */
@@ -13,7 +13,7 @@
 }
 
 body.light-mode {
-    /* Light Theme (Parchment Style) */
+    /* Tema Claro (Estilo Pergaminho) */
     --bg-color: #f4e4bc;
     --text-color: #2b1d0f;
     --surface-color: #e8d5a6;
@@ -43,7 +43,7 @@ body {
     padding: 0 20px;
 }
 
-/* Typography */
+/* tipografia */
 h1, h2, h3, h4 {
     font-family: var(--font-heading);
     color: var(--secondary-color);
@@ -229,7 +229,7 @@ body.light-mode .btn-secondary:hover {
     color: #F5F5DC;
 }
 
-/* Compendium Section */
+/* Seção do compêndio */
 .compendium-section {
     padding: 100px 0;
     background-color: var(--bg-color);

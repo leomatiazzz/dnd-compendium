@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 4. TABS & DATALIST AUTOCOMPLETE ---
     let currentTab = 'spells';
-    let currentListData = []; // Store the API list for the current tab
+    let currentListData = []; // Armazena a lista de APIs da aba atual
 
     const tabBtns = document.querySelectorAll('.tab-btn');
     const apiInput = document.getElementById('api-input');
@@ -59,23 +59,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // UI Update
+            // Atualiza a interface
             tabBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
-            // State Update
+            // Atualiza o estado
             currentTab = btn.getAttribute('data-tab');
             apiInput.value = '';
             resultContainer.classList.add('hidden');
             
-            // Description Update
+            // Atualiza a descrição
             if (currentTab === 'spells') compendiumDesc.innerText = 'Consulte as magias arcanas e divinas.';
             else if (currentTab === 'monsters') compendiumDesc.innerText = 'Pesquise por criaturas e feras.';
             else if (currentTab === 'classes') compendiumDesc.innerText = 'Descubra os caminhos dos heróis.';
             else if (currentTab === 'races') compendiumDesc.innerText = 'Conheça os povos que habitam este mundo.';
             else if (currentTab === 'magic-items') compendiumDesc.innerText = 'Encontre artefatos e relíquias de poder.';
 
-            // Fetch new datalist
+            // Busca nova lista
             fetchTabList(currentTab);
         });
     });
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
             currentListData = data.results;
             
-            // Populate datalist
+            // Preenche a datalist
             datalist.innerHTML = '';
             currentListData.forEach(item => {
                 const option = document.createElement('option');
@@ -115,14 +115,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const queryName = apiInput.value.trim().toLowerCase();
         if (!queryName) return;
 
-        // Find the index in our current list
+        // Encontra o index na lista atual
         const match = currentListData.find(item => item.name.toLowerCase() === queryName);
         
         let queryIndex = '';
         if (match) {
             queryIndex = match.index;
         } else {
-            // Fallback string replacement if they bypass autocomplete
+            // Fallback de substituição de string se eles burlarem o autocompletar
             queryIndex = queryName.replace(/\s+/g, '-');
         }
 
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formSuccess = document.getElementById('form-success');
     const nameInput = document.getElementById('name');
 
-    // ViaCEP Integration
+    // Integração ViaCEP
     const cepInput = document.getElementById('cep');
     const logradouroInput = document.getElementById('logradouro');
     const bairroInput = document.getElementById('bairro');
@@ -302,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
     guildForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
-        // Save Name to Local Storage
+        // Salva o nome no Local Storage
         const heroName = nameInput.value.trim();
         if (heroName) {
             localStorage.setItem('heroName', heroName);

@@ -50,7 +50,3 @@ Este projeto foi construído sem o uso de frameworks complexos, focando nos fund
   <p>Desenvolvido com muito carinho por <strong>Léo</strong>.</p>
   <p><em>Que os dados rolem alto!</em></p>
 </div>
-<<<<<<< .merge_file_69Zei9
-=======
-
->>>>>>> .merge_file_ksYK2F

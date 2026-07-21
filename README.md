@@ -36,17 +36,17 @@ Este projeto foi construído sem o uso de frameworks complexos, focando nos fund
 
 1. Faça o clone deste repositório:
    ```bash
-   git clone https://github.com/leomatiazzz/landing-page-prati.git
+   git clone https://github.com/leomatiazzz/dnd-compendium.git
    ```
 2. Navegue até a pasta do projeto:
    ```bash
-   cd landing-page-prati
+   cd dnd-compendium
    ```
 3. Abra o arquivo `index.html` em qualquer navegador moderno.
 
 ---
 
 <div align="center">
-  <p>Desenvolvido com ☕, 🎲 e muito Javascript por <strong>Léo</strong>.</p>
+  <p>Desenvolvido com muito carinho por <strong>Léo</strong>.</p>
   <p><em>Que os dados rolem alto!</em></p>
 </div>
